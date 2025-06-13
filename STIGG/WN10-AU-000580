@@ -1,0 +1,59 @@
+# xWN10-AU-000580: Audit MPSSVC Rule‑Level Policy Change Failures
+
+> **Warning!** Audit Deprecated  
+> This audit is deprecated and will be removed in a future update.
+
+## Information  
+Maintaining a robust audit trail is essential for identifying configuration errors, troubleshooting service disruptions, and detecting potential compromises.  
+The **MPSSVC** service (Microsoft Protection Service) enforces firewall and IPSec rules. Auditing rule‑level policy changes ensures that any unauthorized or unexpected modifications to MPSSVC policies are logged.
+
+## Solution  
+Enable failure auditing for MPSSVC rule‑level policy changes by configuring the corresponding advanced audit policy.
+
+### Policy Path  
+```text
+Computer Configuration
+└─ Windows Settings
+   └─ Security Settings
+      └─ Advanced Audit Policy Configuration
+         └─ System Audit Policies
+            └─ Policy Change
+               └─ “Audit MPSSVC Rule‑Level Policy Change”
+
+
+Desired Setting
+Failure (log only failed attempts)
+Step‑by‑Step Remediation
+
+Open Group Policy Editor
+Press Win + R, type gpedit.msc, and press Enter.
+Navigate to Advanced Audit Policies
+In the left pane expand:
+
+
+Computer Configuration
+└─ Windows Settings
+   └─ Security Settings
+      └─ Advanced Audit Policy Configuration
+         └─ System Audit Policies
+            └─ Policy Change
+
+Locate “Audit MPSSVC Rule‑Level Policy Change”
+In the Policy Change folder, find Audit MPSSVC Rule‑Level Policy Change.
+Enable Failure Auditing
+Double‑click the setting.
+Check Failure (uncheck Success if selected).
+Click OK.
+Refresh Policy Settings
+Open an elevated Command Prompt and run:
+
+gpupdate /force
+
+Verify Audit Configuration
+Open an elevated PowerShell prompt and run:
+
+auditpol /get /subcategory:"MPSSVC Rule‑Level Policy Change"
+
+Ensure Failure is listed under “Audit Policy” for this subcategory.
+
+
